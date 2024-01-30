@@ -1,0 +1,90 @@
+<html>
+	<head>
+	  <style>
+		.img {
+			position: absolute;
+			top: 160px;
+			left: 80px;
+		}
+
+		.i0 {
+			clip: rect(0px, 100px, 100px, 0px);
+		}
+		.i1 {
+			clip: rect(0px, 200px, 100px, 100px);
+			transform: translateX(-100px);
+		}
+		.i2 {
+			clip: rect(0px, 300px, 100px, 200px);
+			transform: translateX(-200px);
+		}
+		.i3 {
+			clip: rect(0px, 400px, 100px, 300px);
+			transform: translateX(-300px);
+		}
+		.i4 {
+			clip: rect(0px, 500px, 100px, 400px);
+			transform: translateX(-400px);
+		}
+		.background {
+			width: 425px;
+			height: 382px;
+			position: absolute;
+		}
+	</style>
+	  
+
+
+	</head>
+	<body onkeypress="throttledKick()" onclick="throttledKick()">
+
+	<audio id="slap">
+	  <source src="res/slap.mp3" type="audio/mpeg">
+	</audio>
+	<audio id="jala">
+	  <source src="res/jala.mp3" type="audio/mpeg">
+	</audio>
+	
+	<img id="zak" class="background" src="res/happy.png" width="1" height="1">
+	<img id="kicker" class="img i0" src="res/spanky.png" >
+
+	  <script>
+	  
+		var slap = document.getElementById("slap"); 
+		var jala = document.getElementById("jala"); 
+	  
+		var index = 0;
+		var interval = 80;
+		function kick() {
+		  setTimeout(() => {
+
+			if (index++ < 4) {
+				if (index === 1) {
+					slap.play();
+				}
+				document.getElementById("kicker").className = "img i" + index;
+				document.getElementById("zak").src = "res/sad.png";
+				kick();
+			} else {
+				index = 0;
+				document.getElementById("kicker").className = "img i0";
+				document.getElementById("zak").src = "res/happy.png";
+				jala.play();
+			}
+		  }, interval);
+		}
+		function throttle(func, timeFrame) {
+		  var lastTime = 0;
+		  return function () {
+			  var now = Date.now();
+			  if (now - lastTime >= timeFrame) {
+				  func();
+				  lastTime = now;
+			  }
+		  };
+		}
+		var throttledKick = throttle(kick, 5 * interval);
+	</script>
+	
+	</body>
+</html>
